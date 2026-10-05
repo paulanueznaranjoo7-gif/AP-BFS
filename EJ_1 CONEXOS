@@ -1,0 +1,79 @@
+ # =========================
+# GRAPH CLASS
+# =========================
+
+class Graph:
+
+    def __init__(self):
+        self.adj = {}
+
+    def add_node(self, node):
+        if node not in self.adj:
+            self.adj[node] = []
+
+    def add_edge(self, u, v):
+        self.add_node(u)
+        self.add_node(v)
+
+        # Undirected graph
+        self.adj[u].append(v)
+        self.adj[v].append(u)
+
+    def nodes(self):
+        return self.adj.keys()
+
+    def neighbors(self, node):
+        return self.adj[node]
+
+    def __iter__(self):
+        return iter(self.adj)
+
+
+# =========================
+# QUEUE CLASS
+# =========================
+
+class Queue:
+
+    def __init__(self):
+        self.items = []
+
+    def isEmpty(self):
+        return self.items == []
+
+    def enqueue(self, item):
+        self.items.insert(0, item)
+
+    def dequeue(self):
+        return self.items.pop()
+
+    def size(self):
+        return len(self.items)
+
+
+# =========================
+# YOUR CODE
+# =========================
+
+def number_of_groups(G):
+    
+    visitados = []
+    grupos = 0
+    cola = Queue()
+    
+    
+    for node in G:
+        if node not in visitados:
+            grupos += 1 #el resto a partr de while es el cidogo de un grupo, asi que asi cuento cada grupo
+            visitados.append(node)
+            cola.enqueue(node)
+            
+            while not cola.isEmpty():
+            
+                new_node = cola.dequeue()
+            
+                for vecino in G.neighbors(new_node):
+                    if vecino not in visitados:
+                        visitados.append(vecino)
+                        cola.enqueue(vecino)
+    return grupos
